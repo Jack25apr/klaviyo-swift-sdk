@@ -68,6 +68,8 @@ public struct KlaviyoEnvironment {
         sdkVersion = SDKVersion
     }
 
+    static var pushEnablementOverride: (() -> PushEnablement)?
+    
     static let productionHost = "https://a.klaviyo.com"
     public static let encoder = { () -> JSONEncoder in
         let encoder = JSONEncoder()
@@ -148,7 +150,12 @@ public struct KlaviyoEnvironment {
         },
         getNotificationSettings: {
             let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
-            return PushEnablement.create(from: notificationSettings.authorizationStatus)
+            var status = notificationSettings.authorizationStatus
+			if let overrideSubscription = UserDefaults(suiteName: "Recommend")?.value(forKey: "PUSH_SUBSCRIPTION_STATUS") as? String,
+				overrideSubscription == "unsubscribed" {
+				status = UNAuthorizationStatus.denied
+			}
+            return PushEnablement.create(from: status)
         },
         getBackgroundSetting: { .create(from: UIApplication.shared.backgroundRefreshStatus) },
         startReachability: {
