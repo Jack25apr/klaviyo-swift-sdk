@@ -68,7 +68,7 @@ public struct KlaviyoEnvironment {
         sdkVersion = SDKVersion
     }
 
-    static var pushEnablementOverride: (() -> PushEnablement)?
+    static var authorizationStatusOverride: (() -> UNAuthorizationStatus?)?
     
     static let productionHost = "https://a.klaviyo.com"
     public static let encoder = { () -> JSONEncoder in
@@ -151,9 +151,8 @@ public struct KlaviyoEnvironment {
         getNotificationSettings: {
             let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
             var status = notificationSettings.authorizationStatus
-			if let overrideSubscription = UserDefaults(suiteName: "Recommend")?.value(forKey: "PUSH_SUBSCRIPTION_STATUS") as? String,
-				overrideSubscription == "unsubscribed" {
-				status = UNAuthorizationStatus.denied
+            if let overrideStatus = authorizationStatusOverride?(){
+				status = AuthorizationStatusOverride
 			}
             return PushEnablement.create(from: status)
         },
