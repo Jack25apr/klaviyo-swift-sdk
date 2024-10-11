@@ -68,7 +68,7 @@ public struct KlaviyoEnvironment {
         sdkVersion = SDKVersion
     }
 
-    static var authorizationStatusOverride: (() -> UNAuthorizationStatus?)?
+    public static var authorizationStatusOverride: (() -> UNAuthorizationStatus?)?
     
     static let productionHost = "https://a.klaviyo.com"
     public static let encoder = { () -> JSONEncoder in
