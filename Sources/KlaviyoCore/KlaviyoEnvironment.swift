@@ -152,7 +152,7 @@ public struct KlaviyoEnvironment {
             let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
             var status = notificationSettings.authorizationStatus
             if let overrideStatus = authorizationStatusOverride?(){
-                status = .denied
+                status = overrideStatus
 			}
             return PushEnablement.create(from: status)
         },
