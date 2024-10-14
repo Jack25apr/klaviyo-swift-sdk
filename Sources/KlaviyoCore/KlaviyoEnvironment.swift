@@ -150,7 +150,7 @@ public struct KlaviyoEnvironment {
         },
         getNotificationSettings: {
             let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
-            let status = authorizationStatusOverride?(notificationSettings) ?? notificationSettings.authorizationStatus
+            let status = authorizationStatusOverride?(notificationSettings.authorizationStatus) ?? notificationSettings.authorizationStatus
             return PushEnablement.create(from: status)
         },
         getBackgroundSetting: { .create(from: UIApplication.shared.backgroundRefreshStatus) },
