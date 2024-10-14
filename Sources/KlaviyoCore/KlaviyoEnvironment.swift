@@ -68,7 +68,7 @@ public struct KlaviyoEnvironment {
         sdkVersion = SDKVersion
     }
 
-    public static var authorizationStatusOverride: (() -> UNAuthorizationStatus?)?
+    public static var authorizationStatusOverride: ((UNAuthorizationStatus?) -> UNAuthorizationStatus?)?
     
     static let productionHost = "https://a.klaviyo.com"
     public static let encoder = { () -> JSONEncoder in
@@ -150,7 +150,7 @@ public struct KlaviyoEnvironment {
         },
         getNotificationSettings: {
             let notificationSettings = await UNUserNotificationCenter.current().notificationSettings()
-            let status = authorizationStatusOverride?() ?? notificationSettings.authorizationStatus
+            let status = authorizationStatusOverride?(notificationSettings) ?? notificationSettings.authorizationStatus
             return PushEnablement.create(from: status)
         },
         getBackgroundSetting: { .create(from: UIApplication.shared.backgroundRefreshStatus) },
