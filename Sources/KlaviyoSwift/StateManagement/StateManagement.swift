@@ -15,9 +15,9 @@ import AnyCodable
 import Foundation
 import KlaviyoCore
 
-enum StateManagementConstants {
-    static let cellularFlushInterval = 30.0
-    static let wifiFlushInterval = 10.0
+public enum StateManagementConstants {
+    public static var cellularFlushInterval = 30.0
+    public static var wifiFlushInterval = 10.0
     static let maxQueueSize = 200
     static let initialAttempt = 1
 }
